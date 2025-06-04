@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Background Remover</title>
+    <style>
+        body { font-family: Arial; text-align: center; margin-top: 50px; }
+        input { margin-top: 20px; }
+        img { margin-top: 20px; max-width: 100%; height: auto; }
+    </style>
+</head>
+<body>
+    <h1>Remove Image Background</h1>
+    <form id="upload-form">
+        <input type="file" name="image" id="image" accept="image/*" required>
+        <br>
+        <button type="submit">Remove Background</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        const form = document.getElementById('upload-form');
+        form.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const response = await fetch('/remove-bg', {
+                method: 'POST',
+                body: formData
+            });
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            document.getElementById('result').innerHTML = `<h3>Result:</h3><img src="${url}" alt="Processed Image">`;
+        });
+    </script>
+</body>
+</html>
